@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.tops.storageandroid.DrawerDashboard
@@ -35,40 +36,52 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.btnlogin.setOnClickListener {
+//            val sharepref = activity?.getSharedPreferences(
+//                getString(R.string.app_name),
+//                Context.MODE_PRIVATE
+//            ) ?: return@setOnClickListener
+//            with(sharepref.edit()) {
+//                putBoolean(IS_LOGIN, true)
+//                apply()
+//            }
 
-                         binding.btnlogin.setOnClickListener {
-            val sharepref = activity?.getSharedPreferences(getString(R.string.app_name),
-                Context.MODE_PRIVATE)?: return@setOnClickListener
-            with(sharepref.edit()){
-                putBoolean( IS_LOGIN, true)
-                apply()
+//            if (binding.etusername.text.toString() == "") {
+//                binding.tvusername.error = " *Username Required"
+//                return@setOnClickListener
+//            }
+//            if (binding.etpassword.text.toString() == "" || binding.etpassword.length() < 8) {
+//                binding.tvpassword.error = " *Required Min. 8 characters!!"
+//                return@setOnClickListener
+//            }
+//            if (binding.etusername.text.toString()== "Jay"
+//                && binding.etpassword.text.toString()== "Jay1234") {
+            if (checkField()){
+                val intent = Intent(context, DrawerDashboard::class.java)
+                startActivity(intent)
+            }else{
+                Toast.makeText(requireContext(), "Enter Valid Details!!", Toast.LENGTH_SHORT).show()
+
             }
-                val intent = Intent(context , DrawerDashboard::class.java)
-            startActivity(intent)
-             }
+        }
 
+            binding.btnsignup.setOnClickListener {
+                activity?.supportFragmentManager?.commit {
+                    setReorderingAllowed(true)
+                    replace<SignupFragment>(R.id.mainactivitycontainer)
+                }
+            }
+        }
+        fun checkField(): Boolean {
 
-
-
-       binding.btnsignup.setOnClickListener {
-           activity?.supportFragmentManager?.commit {
-               setReorderingAllowed(true)
-               replace<SignupFragment>(R.id.mainactivitycontainer)
-           }
-       }
+            if (binding.etusername.text.toString() == "") {
+                binding.tvusername.error = " *Required"
+                return false
+            }
+            if (binding.etpassword.text.toString() == "" || binding.etpassword.length() < 8) {
+                binding.tvpassword.error = " *Required Min. 8 characters!!"
+                return false
+            }
+            return true
+        }
     }
-//    private fun checkField():Boolean{
-//
-//        if (binding.etusername == null){
-//            binding.tvusername.error = " *Required"
-//            return false
-//        }
-//        if (binding.etpassword == null || binding.etpassword.length() < 8){
-//            binding.tvpassword.error = " *Required Min. 8 characters!!"
-//            return false
-//        }
-//        return true
-//    }
-}
-
-
