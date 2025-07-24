@@ -33,7 +33,19 @@ class HomeFragment : Fragment() {
 
 
         binding.rvEmployees.layoutManager = LinearLayoutManager(requireContext())
-        adapter = MyAdapter(mutableListOf())
+        adapter = MyAdapter(
+            mutableListOf(),
+            onDeleteClick = { emp ->
+                employeviewmodel.deleteEmp(emp)
+            },
+            onItemClick = { emp ->
+                val bundle = Bundle().apply {
+                    putSerializable("employee_data", emp)
+                }
+                findNavController().navigate(R.id.action_homeFragment_to_addEmployeFragment, bundle)
+            }
+        )
+
         binding.rvEmployees.adapter = adapter
 
         employeviewmodel.employes.observe(viewLifecycleOwner, Observer{

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.tops.storageandroid.Entity.Employe
 import com.tops.storageandroid.R
 import com.tops.storageandroid.ViewMOdel.EmployeViewModel
 import com.tops.storageandroid.databinding.FragmentAddEmployeBinding
@@ -18,6 +19,8 @@ class AddEmployeFragment : Fragment() {
 
     private lateinit var binding: FragmentAddEmployeBinding
     private val employeviewmodel: EmployeViewModel by viewModels()
+    private var currentEmploye: Employe? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +33,18 @@ class AddEmployeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val emp = arguments?.getSerializable("employee_data") as? Employe
+        currentEmploye = emp
+        currentEmploye?.let { emp ->
+            binding.etName.setText(emp.EmpName)
+            binding.etEmail.setText(emp.EmpEmail)
+            binding.etAddress.setText(emp.EmpAddress)
+            binding.etPhone.setText(emp.EmpPhone.toString())
+            binding.etRole.setText(emp.EmpRole)
+            binding.btnSubmit.text = "Update Employee"
+        }
+
+
         binding.btnSubmit.setOnClickListener {
             val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
@@ -41,8 +56,21 @@ class AddEmployeFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            employeviewmodel.addEmp(name,email,address,phone,role)
-            Toast.makeText(requireContext(), "Employee added", Toast.LENGTH_SHORT).show()
+            if (currentEmploye == null) {
+                employeviewmodel.addEmp(name, email, address, phone, role)
+                Toast.makeText(requireContext(), "Employee added", Toast.LENGTH_SHORT).show()
+
+            }else{
+                val updatedEmp = currentEmploye!!.copy(
+                    EmpName = name,
+                    EmpEmail = email,
+                    EmpAddress = address,
+                    EmpPhone = phone,
+                    EmpRole = role
+                )
+                employeviewmodel.updateEmp(updatedEmp)
+                Toast.makeText(requireContext(), "Employee updated", Toast.LENGTH_SHORT).show()
+            }
             findNavController().navigate(R.id.action_addEmployeFragment_to_homeFragment)
         }
     }

@@ -27,4 +27,17 @@ class EmployeViewModel : ViewModel() {
         }
 
     }
+
+    fun updateEmp(employe: Employe) {
+        viewModelScope.launch(Dispatchers.IO) {
+            employeData.updateEmp(employe)
+        }
+    }
+
+    fun deleteEmp(employe: Employe) {
+        viewModelScope.launch(Dispatchers.IO) {
+            employeData.deleteEmp(employe)
+        }
+    }
+
 }

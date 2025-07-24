@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -47,7 +48,6 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.fragment)
     ksp("androidx.room:room-compiler:2.7.2")
-    annotationProcessor("androidx.room:room-compiler:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
 
     //ViewModelScope

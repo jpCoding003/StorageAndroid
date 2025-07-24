@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tops.storageandroid.Entity.Employe
 import com.tops.storageandroid.databinding.ItemEmployeBinding
 
-class MyAdapter(var employeList: MutableList<Employe>): RecyclerView.Adapter<MyAdapter.EmployeViewHolder>() {
+class MyAdapter(var employeList: MutableList<Employe>,
+                private val onDeleteClick: (Employe) -> Unit,
+                private val onItemClick: (Employe) -> Unit): RecyclerView.Adapter<MyAdapter.EmployeViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -23,6 +25,15 @@ class MyAdapter(var employeList: MutableList<Employe>): RecyclerView.Adapter<MyA
         val emplist = employeList[position]
         holder.binding.tvEmpName.text = emplist.EmpName
         holder.binding.tvEmpRole.text = emplist.EmpRole
+
+        holder.binding.btnDelete.setOnClickListener {
+            onDeleteClick(emplist)
+        }
+
+        holder.binding.root.setOnClickListener {
+            onItemClick(emplist)
+        }
+
     }
 
     override fun getItemCount(): Int = employeList.size

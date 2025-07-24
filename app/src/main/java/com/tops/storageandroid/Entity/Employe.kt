@@ -3,6 +3,7 @@ package com.tops.storageandroid.Entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 
 @Entity("EmployeDetails")
@@ -19,4 +20,4 @@ data class Employe(
     @ColumnInfo(name= "EmpPhone") val EmpPhone : Long,
 
     @ColumnInfo(name= "EmpRole") val EmpRole : String,
-)
+): Serializable
